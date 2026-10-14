@@ -1,0 +1,36 @@
+name: Build wxl-physics
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ext
+      - uses: actions/checkout@v4
+        with:
+          repository: WarcraftXL/wxl-core
+          ref: v1.1
+          submodules: recursive
+          path: core
+      - name: 把扩展源码放进 core/extensions/
+        shell: pwsh
+        run: |
+          $dest = "core/extensions/wxl-physics"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Copy-Item -Path "ext/src" -Destination $dest -Recurse -Force
+      - name: Configure (Win32)
+        run: cmake -S core -B core/build -A Win32
+      - name: Build
+        run: cmake --build core/build --config Release --target wxl-physics --parallel
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: wxl-physics
+          path: |
+            core/build/Release/wxl-physics.dll
+            ext/wxl.json
