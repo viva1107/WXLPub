@@ -1,0 +1,36 @@
+{
+  "manifest": 1,
+  "extension": {
+    "id": "wxl-physics",
+    "version": "1.0.0",
+    "abi": "1.1",
+    "entry": "wxl-physics.dll",
+    "assets": [],
+    "requires": {},
+    "conflicts": [
+      "wxl-equip-plus",
+      "wxl-equip-extension"
+    ],
+    "hooks": [
+      {
+        "target": "M2.BuildBonePalette"
+      },
+      {
+        "target": "Storage.FileOpen"
+      },
+      {
+        "target": "Storage.FileSize"
+      },
+      {
+        "target": "Storage.FileRead"
+      },
+      {
+        "target": "Storage.FileClose"
+      }
+    ]
+  },
+  "deploy": {
+    "mode": "release",
+    "match": "*.dll"
+  }
+}
