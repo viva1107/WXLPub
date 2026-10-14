@@ -1,0 +1,21 @@
+name: Build phy2-generator EXE
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  exe:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyinstaller
+      - run: python -m PyInstaller --onefile --name WXLEquipPlusPhysics-gen "phy2_dd/生成物理表-拖我.py"
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: WXLEquipPlusPhysics-gen
+          path: |
+            dist/WXLEquipPlusPhysics-gen.exe
+            phy2_dd/tools
